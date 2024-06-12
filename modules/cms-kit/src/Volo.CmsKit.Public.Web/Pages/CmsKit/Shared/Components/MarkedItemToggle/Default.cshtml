@@ -1,0 +1,9 @@
+﻿@using Volo.Abp.Users
+@inject ICurrentUser CurrentUser
+@model Volo.CmsKit.Public.Web.Pages.CmsKit.Shared.Components.MarkedItemToggle.MarkedItemToggleViewComponent.MarkedItemToggleViewModel
+@{
+}
+
+<div class="cms-markedItem-area" data-entity-type="@Model.EntityType" data-entity-id="@Model.EntityId">
+    <i class="cms-markedItem-icon @Model.MarkedItem.Icon @(Model.MarkedItem.IsMarkedByCurrentUser ? "umarked" : "")" data-is-authenticated="@(CurrentUser.IsAuthenticated ? "true" : "false")"></i>
+</div>

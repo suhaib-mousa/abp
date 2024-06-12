@@ -7,6 +7,7 @@ using Volo.CmsKit.Reactions;
 using Volo.CmsKit.Web.Icons;
 using Markdig;
 using Microsoft.Extensions.DependencyInjection;
+using Volo.CmsKit.MarkedItems;
 
 namespace Volo.CmsKit.Web;
 
@@ -21,6 +22,7 @@ public class CmsKitCommonWebModule : AbpModule
     {
         Configure<CmsKitUiOptions>(options =>
         {
+            // Reaction Icons
             options.ReactionIcons[StandardReactions.Smile] = new LocalizableIconDictionary("fas fa-smile text-warning");
             options.ReactionIcons[StandardReactions.ThumbsUp] = new LocalizableIconDictionary("fa fa-thumbs-up text-primary");
             options.ReactionIcons[StandardReactions.Confused] = new LocalizableIconDictionary("fas fa-surprise text-warning");
@@ -33,6 +35,13 @@ public class CmsKitCommonWebModule : AbpModule
             options.ReactionIcons[StandardReactions.ThumbsDown] = new LocalizableIconDictionary("fa fa-thumbs-down text-secondary");
             options.ReactionIcons[StandardReactions.Victory] = new LocalizableIconDictionary("fas fa-hand-peace text-warning");
             options.ReactionIcons[StandardReactions.Rock] = new LocalizableIconDictionary("fas fa-hand-rock text-warning");
+
+            // MarkedItem Icons
+            options.MarkedItemIcons[StandardMarkedItems.Favorite] = new LocalizableIconDictionary("fa fa-heart text-danger");
+            options.MarkedItemIcons[StandardMarkedItems.Flagged] = new LocalizableIconDictionary("fa fa-flag text-info");
+            options.MarkedItemIcons[StandardMarkedItems.Bookmark] = new LocalizableIconDictionary("fa fa-bookmark text-primary");
+            options.MarkedItemIcons[StandardMarkedItems.Starred] = new LocalizableIconDictionary("fa fa-star text-warning");
+
         });
         
         context.Services

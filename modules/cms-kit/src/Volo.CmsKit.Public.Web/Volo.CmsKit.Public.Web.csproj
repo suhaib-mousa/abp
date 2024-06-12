@@ -36,4 +36,9 @@
     <Content Remove="wwwroot\**\*.css" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Pages\CmsKit\Shared\Components\MarkedItemToggle\default.css" />
+    <None Remove="pages\cmskit\shared\components\markeditemtoggle\default.js" />
+  </ItemGroup>
+
 </Project>

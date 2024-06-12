@@ -8,6 +8,7 @@
 @using Volo.CmsKit.GlobalFeatures
 @using Volo.CmsKit.Pages
 @using Volo.CmsKit.Public.Web.Pages.CmsKit.Shared.Components.Commenting
+@using Volo.CmsKit.Public.Web.Pages.CmsKit.Shared.Components.MarkedItemToggle
 @using Volo.CmsKit.Public.Web.Pages.CmsKit.Shared.Components.Rating
 @using Volo.CmsKit.Public.Web.Pages.CmsKit.Shared.Components.ReactionSelection
 @using Volo.CmsKit.Public.Web.Pages.CmsKit.Shared.Components.Tags
@@ -117,4 +118,36 @@
             })
         }
     </abp-column>
+</abp-row>
+
+
+<hr />
+<abp-row> <!--qais-->
+    @for (int i = 1; i <= 4; i++)
+    {
+        var name = $"Product {i}";
+        var count = (i * 10).ToString();
+        var image = $"https://via.placeholder.com/150?text=Product+{i}";
+        var price = $"${(i * 10).ToString("F2")}";
+        <div class="col-md-4 mb-4">
+            <div class="card bg-light">
+                <img src="@image" class="card-img-top" alt="@name">
+                <div class="card-body">
+                    <div style="
+                                position: absolute;
+                                right: 25px;
+                                    ">
+                        @await Component.InvokeAsync(typeof(MarkedItemToggleViewComponent), new
+                            {
+                                entityId = name,
+                                entityType = "product"
+                            })
+                    </div>
+                    <h5 class="card-title">@name</h5>
+                    <p class="card-text">Count: @count</p>
+                    <p class="card-text">Price: @price</p>
+                </div>
+            </div>
+        </div>
+    }
 </abp-row>
