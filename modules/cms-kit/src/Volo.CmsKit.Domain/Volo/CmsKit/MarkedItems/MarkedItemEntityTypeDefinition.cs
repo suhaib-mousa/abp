@@ -1,21 +1,16 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Volo.Abp;
 
 namespace Volo.CmsKit.MarkedItems;
 
-public class MarkedItemEntityTypeDefinition : PolicySpecifiedDefinition
+public class MarkedItemEntityTypeDefinition : EntityTypeDefinition
 {
-    [NotNull]
-    public MarkedItemDefinition MarkedItem { get; }
-
+    public string IconName { get; set; }
     public MarkedItemEntityTypeDefinition(
         [NotNull] string entityType,
-        [NotNull] MarkedItemDefinition markedItem,
-        IEnumerable<string> createPolicies = null,
-        IEnumerable<string> updatePolicies = null,
-        IEnumerable<string> deletePolicies = null) : base(entityType, createPolicies, updatePolicies, deletePolicies)
+        [NotNull] string iconName) : base(entityType)
     {
-        MarkedItem = Check.NotNull(markedItem, nameof(markedItem));
+        Check.NotNull(iconName, nameof(iconName));
+        IconName = iconName;
     }
 }

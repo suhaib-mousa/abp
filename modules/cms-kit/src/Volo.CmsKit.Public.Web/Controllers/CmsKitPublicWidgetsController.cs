@@ -25,8 +25,8 @@ public class CmsKitPublicWidgetsController : CmsKitPublicControllerBase
         return Task.FromResult((IActionResult)ViewComponent(typeof(RatingViewComponent), new { entityType, entityId }));
     }
 
-    public Task<IActionResult> MarkedItem(string entityType, string entityId)
+    public Task<IActionResult> MarkedItem(string entityType, string entityId, bool needsConfirmation)
     {
-        return Task.FromResult((IActionResult)ViewComponent(typeof(MarkedItemToggleViewComponent), new { entityType, entityId }));
+        return Task.FromResult((IActionResult)ViewComponent(typeof(MarkedItemToggleViewComponent), new { entityType, entityId, needsConfirmation }));
     }
 }

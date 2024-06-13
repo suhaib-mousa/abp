@@ -5,8 +5,3 @@
     font-size: 1.5em;
     cursor: pointer;
 }
-
-.umarked {
-    -webkit-text-stroke-width: 2px;
-    color: var(--bs-light) !important;
-}

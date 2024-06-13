@@ -16,15 +16,6 @@ public class DefaultMarkedItemDefinitionStore : IMarkedItemDefinitionStore
         Options = options.Value;
     }
 
-    public virtual async Task<MarkedItemDefinition> GetMarkedItemAsync([NotNull] string entityType)
-    {
-        Check.NotNullOrEmpty(entityType, nameof(entityType));
-
-        var definition = await GetAsync(entityType);
-
-        return definition.MarkedItem;
-    }
-
     public virtual Task<bool> IsDefinedAsync([NotNull] string entityType)
     {
         Check.NotNullOrWhiteSpace(entityType, nameof(entityType));

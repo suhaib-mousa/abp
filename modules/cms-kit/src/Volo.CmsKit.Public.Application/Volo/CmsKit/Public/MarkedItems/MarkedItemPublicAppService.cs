@@ -30,7 +30,7 @@ public class MarkedItemPublicAppService : CmsKitPublicAppServiceBase, IMarkedIte
     [AllowAnonymous]
     public virtual async Task<MarkedItemWithToggleDto> GetForToggleAsync(string entityType, string entityId)
     {
-        var markedItem = await MarkedItemManager.GetMarkedItemAsync(entityType);
+        var markedItem = await MarkedItemManager.GetAsync(entityType);
 
         var userMarkedItem = CurrentUser.IsAuthenticated
             ? (await UserMarkedItemRepository
@@ -47,44 +47,6 @@ public class MarkedItemPublicAppService : CmsKitPublicAppServiceBase, IMarkedIte
             IsMarkedByCurrentUser = userMarkedItem != null
         };
     }
-
-    private MarkedItemDto ConvertToMarkedItemDto(MarkedItemDefinition markedItemDefinition)
-    {
-        return new MarkedItemDto
-        {
-            Name = markedItemDefinition.Name,
-            DisplayName = markedItemDefinition.DisplayName?.Localize(StringLocalizerFactory)
-        };
-    }
-
-    [Authorize] // qais: is usefull?
-    public virtual async Task<ListResultDto<MarkedItemWithToggleDto>> GetUserMarkedItemsAsync(string entityType)
-    {
-        var markedItems = await UserMarkedItemRepository.GetListForUserAsync(
-            CurrentUser.GetId(),
-            entityType
-            );
-        return null;
-        //return new ListResultDto<MarkedItemDto>()
-        //{
-        //    Items = ObjectMapper.Map<IReadOnlyList<UserMarkedItem>, IReadOnlyList<MarkedItemDto>>(markedItems),
-        //};
-    }
-
-    [AllowAnonymous]
-    public virtual async Task<bool> IsMarkedAsync(string entityType, string entityId)
-    {
-        if (!CurrentUser.IsAuthenticated)
-        {
-            return false;
-        }
-        return await MarkedItemManager.HasMarkedItemAsync(
-            CurrentUser.GetId(), 
-            entityType, 
-            entityId
-        );
-    }
-
     [Authorize]
     public virtual async Task<bool> ToggleAsync(string entityType, string entityId)
     {
@@ -94,4 +56,13 @@ public class MarkedItemPublicAppService : CmsKitPublicAppServiceBase, IMarkedIte
             entityId
         );
     }
+
+    private MarkedItemDto ConvertToMarkedItemDto(MarkedItemEntityTypeDefinition markedItemEntityTypeDefinition)
+    {
+        return new MarkedItemDto
+        {
+            IconName = markedItemEntityTypeDefinition.IconName
+        };
+    }
+
 }

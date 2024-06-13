@@ -48,23 +48,11 @@ public class MarkedItemManager : CmsKitDomainServiceBase
         return true;
     }
 
-    public virtual async Task<MarkedItemDefinition> GetMarkedItemAsync(
+    public virtual async Task<MarkedItemEntityTypeDefinition> GetAsync(
         [NotNull] string entityType)
     {
         Check.NotNullOrWhiteSpace(entityType, nameof(entityType));
 
-        return await MarkedItemDefinitionStore.GetMarkedItemAsync(entityType);
-    }
-    
-    public virtual async Task<bool> HasMarkedItemAsync(
-        Guid creatorId,
-        [NotNull] string entityType,
-        [NotNull] string entityId)
-    {
-        Check.NotNullOrWhiteSpace(entityType, nameof(entityType));
-        Check.NotNullOrWhiteSpace(entityId, nameof(entityId));
-
-        var markedItem = await UserMarkedItemRepository.FindAsync(creatorId, entityType, entityId);
-        return markedItem != null;
+        return await MarkedItemDefinitionStore.GetAsync(entityType);
     }
 }

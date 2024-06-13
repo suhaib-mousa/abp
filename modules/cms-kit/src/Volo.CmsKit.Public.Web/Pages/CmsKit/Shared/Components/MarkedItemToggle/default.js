@@ -1,19 +1,30 @@
 (function ($) {
+    var l = abp.localization.getResource('CmsKit');
 
     abp.widgets.CmsMarkedItemToggle = function ($widget) {
+
         let widgetManager = $widget.data('abp-widget-manager');
         let $markedItemArea = $widget.find('.cms-markedItem-area');
+        let loginModal = new abp.ModalManager(abp.appPath + 'CmsKit/Shared/Modals/Login/LoginModal');
+
 
         function getFilters() {
             return {
                 entityType: $markedItemArea.attr('data-entity-type'),
-                entityId: $markedItemArea.attr('data-entity-id')
+                entityId: $markedItemArea.attr('data-entity-id'),
+                needsConfirmation: $markedItemArea.attr('data-needs-confirmation')
             };
         }
 
-        function setIconColor($icon) {
+        function setIconStyles($icon) {
             var iconColor = $icon.css('color');
-            $icon.css('-webkit-text-stroke-color', iconColor);
+            $icon.css({
+                '-webkit-text-stroke-color': iconColor,
+                '-webkit-text-stroke-width': '2px'
+            });
+
+            // Manually set the important rule for color
+            $icon[0].style.setProperty('color', 'transparent', 'important');
         }
 
         function isDoubleClicked(element) {
@@ -26,36 +37,48 @@
         }
 
         function handleUnauthenticated() {
-            // TODO: Handle the unauthenticated case
+            loginModal.open({
+                message: l("CmsKit:MarkedItem:LoginMessage"),
+                returnUrl: $markedItemArea.attr('data-return-url')
+            });
         }
 
         function registerClickOfMarkedItemIcon($container) {
             var $icon = $container.find('.cms-markedItem-icon');
-            console.log($icon)
 
             if (isDoubleClicked($icon)) return;
             
-            if ($icon.attr('data-is-authenticated') === 'false') {
-                handleUnauthenticated();
-                return;
-            }
-            $icon.click(function () {
-                console.log('toggling...')
-                volo.cmsKit.public.markedItems.markedItemPublic.toggle(
-                    $markedItemArea.attr('data-entity-type'),
-                    $markedItemArea.attr('data-entity-id')
-                ).then(function () {
-                    widgetManager.refresh($widget);
-                });
+            $icon.click(async function () {
+                if ($icon.attr('data-is-authenticated') === 'false') {
+                    handleUnauthenticated();
+                    return;
+                }
+
+                if ($icon.hasClass('confirm') && !$icon.hasClass('unmarked')) {
+                    const confirmed = await abp.message.confirm(l('CmsKit:MarkedItem:ToggleConfirmation'));
+                    if (confirmed) {
+                        toggleIcon($icon);
+                    }
+                    return;
+                }
+                else {
+                    toggleIcon();
+                }
             });
         }
 
-        function init() {
-            console.log('init')
+        async function toggleIcon() {
+            await volo.cmsKit.public.markedItems.markedItemPublic.toggle(
+                $markedItemArea.attr('data-entity-type'),
+                $markedItemArea.attr('data-entity-id')
+            );
+           widgetManager.refresh($widget);
+        }
 
+        function init() {
             var $unmarked = $widget.find('.unmarked');
             if ($unmarked.length === 1) {
-                setIconColor($unmarked);
+                setIconStyles($unmarked);
             }
             registerClickOfMarkedItemIcon($widget);
         }

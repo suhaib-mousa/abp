@@ -7,8 +7,5 @@ namespace Volo.CmsKit.Public.MarkedItems;
 public class MarkedItemDto
 {
     [NotNull]
-    public string Name { get; set; }
-
-    [CanBeNull]
-    public string DisplayName { get; set; }
+    public string IconName { get; set; }
 }

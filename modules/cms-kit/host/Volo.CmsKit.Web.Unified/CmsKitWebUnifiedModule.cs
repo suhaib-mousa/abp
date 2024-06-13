@@ -242,9 +242,7 @@ public class CmsKitWebUnifiedModule : AbpModule
             options.EntityTypes.Add(
                 new MarkedItemEntityTypeDefinition(
                     "product",
-                    new MarkedItemDefinition(
-                        StandardMarkedItems.Favorite
-                        )
+                    StandardMarkedItems.Favorite
                     )
                 );
         });

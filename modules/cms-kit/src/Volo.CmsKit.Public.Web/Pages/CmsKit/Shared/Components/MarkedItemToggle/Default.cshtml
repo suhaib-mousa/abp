@@ -4,6 +4,11 @@
 @{
 }
 
-<div class="cms-markedItem-area" data-entity-type="@Model.EntityType" data-entity-id="@Model.EntityId">
-    <i class="cms-markedItem-icon @Model.MarkedItem.Icon @(Model.MarkedItem.IsMarkedByCurrentUser ? "umarked" : "")" data-is-authenticated="@(CurrentUser.IsAuthenticated ? "true" : "false")"></i>
+<div class="cms-markedItem-area"
+     data-entity-type="@Model.EntityType"
+     data-entity-id="@Model.EntityId"
+     data-needs-confirmation="@Model.NeedsConfirmation"
+     data-return-url="@(CurrentUser.IsAuthenticated ? "" : Model.ReturnUrl)">
+    <i class="cms-markedItem-icon @Model.MarkedItem.Icon @(Model.MarkedItem.IsMarkedByCurrentUser ? (Model.NeedsConfirmation ? "confirm" : "") : "unmarked")"
+       data-is-authenticated="@(CurrentUser.IsAuthenticated ? "true" : "false")"></i>
 </div>

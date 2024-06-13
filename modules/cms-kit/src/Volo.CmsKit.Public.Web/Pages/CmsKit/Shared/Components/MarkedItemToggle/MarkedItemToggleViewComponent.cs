@@ -3,7 +3,6 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Volo.Abp.AspNetCore.Mvc;
-using Volo.Abp.AspNetCore.Mvc.UI;
 using Volo.Abp.AspNetCore.Mvc.UI.Widgets;
 using Volo.CmsKit.Public.MarkedItems;
 using Volo.CmsKit.Web;
@@ -23,37 +22,34 @@ public class MarkedItemToggleViewComponent : AbpViewComponent
 
     protected CmsKitUiOptions Options { get; }
 
-    public AbpMvcUiOptions AbpMvcUiOptions { get; }
 
     public MarkedItemToggleViewComponent(
         IMarkedItemPublicAppService markedItemPublicAppService,
-        IOptions<CmsKitUiOptions> options,
-        IOptions<AbpMvcUiOptions> abpMvcUiOptions)
+        IOptions<CmsKitUiOptions> options)
     {
         MarkedItemPublicAppService = markedItemPublicAppService;
         Options = options.Value;
-        AbpMvcUiOptions = abpMvcUiOptions.Value;
     }
 
     public virtual async Task<IViewComponentResult> InvokeAsync(
         string entityType,
-        string entityId)
+        string entityId,
+        bool? needsConfirmation = false)
     {
         var result = await MarkedItemPublicAppService.GetForToggleAsync(entityType, entityId);
-
-        var loginUrl =
-            $"{AbpMvcUiOptions.LoginUrl}?returnUrl={HttpContext.Request.Path.ToString()}&returnUrlHash=#cms-markedItem_{entityType}_{entityId}";
+        var returnUrl = HttpContext.Request.Path.ToString();
 
         var viewModel = new MarkedItemToggleViewModel
         {
             EntityType = entityType,
             EntityId = entityId,
+            NeedsConfirmation = needsConfirmation.GetValueOrDefault(),
             MarkedItem = new MarkedItemViewModel()
             {
-                Icon = Options.MarkedItemIcons.GetLocalizedIcon(result.MarkedItem.Name),
+                Icon = Options.MarkedItemIcons.GetLocalizedIcon(result.MarkedItem.IconName),
                 IsMarkedByCurrentUser = result.IsMarkedByCurrentUser
             },
-            LoginUrl = loginUrl
+            ReturnUrl = returnUrl
         };
 
         return View("~/Pages/CmsKit/Shared/Components/MarkedItemToggle/Default.cshtml", viewModel);
@@ -64,9 +60,11 @@ public class MarkedItemToggleViewComponent : AbpViewComponent
 
         public string EntityId { get; set; }
 
+        public bool NeedsConfirmation { get; set; }
+
         public MarkedItemViewModel MarkedItem { get; set; }
 
-        public string LoginUrl { get; set; }
+        public string ReturnUrl { get; set; }
     }
 
     public class MarkedItemViewModel
