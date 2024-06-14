@@ -181,6 +181,7 @@ public class CmsKitDataSeedContributor : IDataSeedContributor, ITransientDepende
         _ratingOptions.Value.EntityTypes.Add(new RatingEntityTypeDefinition(_cmsKitTestData.EntityType2));
 
         _markedItemOptions.Value.EntityTypes.Add(new MarkedItemEntityTypeDefinition(_cmsKitTestData.EntityType1, StandardMarkedItems.Favorite));
+        _markedItemOptions.Value.EntityTypes.Add(new MarkedItemEntityTypeDefinition(_cmsKitTestData.EntityType2, StandardMarkedItems.Starred));
 
         return Task.CompletedTask;
     }

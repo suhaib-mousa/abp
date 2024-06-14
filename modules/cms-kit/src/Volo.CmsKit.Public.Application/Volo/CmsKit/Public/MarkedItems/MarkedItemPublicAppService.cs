@@ -47,6 +47,7 @@ public class MarkedItemPublicAppService : CmsKitPublicAppServiceBase, IMarkedIte
             IsMarkedByCurrentUser = userMarkedItem != null
         };
     }
+
     [Authorize]
     public virtual async Task<bool> ToggleAsync(string entityType, string entityId)
     {
